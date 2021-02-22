@@ -137,3 +137,8 @@ select {
   transform: scale(1.5);
 }
 */
+
+/* custom css */
+.react-datepicker-wrapper {
+  margin-right: 15px;
+}
