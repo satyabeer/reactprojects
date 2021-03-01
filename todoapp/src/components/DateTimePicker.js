@@ -1,19 +1,13 @@
-import React, { useState } from 'react'
+import React from 'react'
 import DatePicker from 'react-datepicker';
-import setHours from "date-fns/setHours";
-import setMinutes from "date-fns/setMinutes";
 require('react-datepicker/dist/react-datepicker.css')
 
 const DateTimePicker = (props) => {
     // let startDate = props.startDate;
-    const [startDate, setStartDate] = useState(
-        setHours(setMinutes(new Date(), 0), 9)
-    );
-
     return (
-        <DatePicker
-            selected={startDate}
-            onChange={date => setStartDate(date)}
+        <DatePicker className="form-control col-md-3"
+            selected={props.startDate}
+            onChange={props.onchange}
             showTimeSelect
             minDate={new Date()}
             dateFormat="Y-MM-d h:mm aa"

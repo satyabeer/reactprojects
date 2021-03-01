@@ -1,16 +1,20 @@
 import React from 'react'
+import { BrowserRouter as Router } from "react-router-dom";
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
 // importing components
+import Header from './components/Header';
 import Form from './components/Form';
 import TodoList from './components/TodoList';
 
+
 function App() {
-  	return (
+	return (
 		<div className="App">
-			<header>
-				<h1>Satya's Todo List</h1>
-			</header>
+			<Router>
+				<Header/>
+			</Router>
 			<Form />
 			<TodoList />
 		</div>
