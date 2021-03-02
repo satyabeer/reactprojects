@@ -1,7 +1,9 @@
+/* eslint-disable no-template-curly-in-string */
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
-import Button from 'react-bootstrap/Button'
 
 const TodoList = () => {
     useEffect(() => {
@@ -75,8 +77,10 @@ const TodoList = () => {
                             <td>{item.task}</td>
                             <td>{item.status}</td>
                             <td>
-                                <Button variant="outline-primary"><FontAwesomeIcon icon={faEdit} /></Button>
-                                <Button variant="outline-danger"><FontAwesomeIcon icon={faTrash} /></Button>
+                                <Router>
+                                    <Link to={`task/edit/${item.id}`} className="btn btn-outline-primary"><FontAwesomeIcon icon={faEdit} /></Link>
+                                    <Link to={`task/delete/${item.id}`} className="btn btn-outline-danger"><FontAwesomeIcon icon={faTrash} /></Link>
+                                </Router>
                             </td>
                         </tr>
                     ))}
