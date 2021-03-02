@@ -1,14 +1,11 @@
 import React, { useState } from 'react'
-import DatePicker from 'react-datepicker';
 import setHours from "date-fns/setHours";
 import setMinutes from "date-fns/setMinutes";
+import DateTimePicker from './DateTimePicker';
 require('react-datepicker/dist/react-datepicker.css')
 
 const Form = (props) => {
-
     const [task, setTask] = useState('');
-    const [filter, setFilter] = useState('all');
-    // const [data, setData] = useState({task: '', filter: 'all'});
     const [startDate, setStartDate] = useState(
         setHours(setMinutes(new Date(), (new Date().getMinutes() > 30 ? 0 : 30 )), new Date().getHours())
     );
@@ -34,11 +31,10 @@ const Form = (props) => {
         let formData = {
             date: taskDate,
             time: taskTime,
-            task: task,
-            filter: filter
+            task: task
         };
 
-        let response = await fetch('http://localhost:80/gitphp/todoapp/addtask.php', {
+        let response = await fetch('http://localhost:80/gitphp/php/todoapp/addtask.php', {
             method: 'post',
             body: JSON.stringify(formData)
         });
@@ -50,30 +46,50 @@ const Form = (props) => {
         response = await response.json();
 
         // reset the form
-        document.querySelector('.todo-input').value = '';
+        document.querySelector('form').reset();
+
+        // append the recently added field in table
+        let table = document.querySelector('table');
+        let lastrow = table.rows[ table.rows.length - 1 ];
+
+        // create a new row and append it into table
+        let row = table.insertRow(table.rows.length);
+
+        // add sr no to row
+        let srno = row.insertCell(0);
+
+        // add task name
+        let taskName = row.insertCell(1);
+
+        // add task status
+        let taskStatus = row.insertCell(2);
+
+        // add task actions
+        let taskAction = row.insertCell(3);
+        let serialNo = parseInt(lastrow.querySelector('th').innerText) + 1;
+        srno.outerHTML = "<th class='scope'>" + serialNo + " </th>";
+        taskName.innerHTML = task;
+        taskStatus.innerHTML = "Active";
+        taskAction.innerHTML = lastrow.lastElementChild.innerHTML;
+
     }
 
     return (
-        <form onSubmit={saveTask}>
-            <DatePicker
-                selected={startDate}
-                onChange={date => setStartDate(date)}
-                showTimeSelect
-                minDate={new Date()}
-                dateFormat="Y-MM-dd h:mm aa"
-            />
-            <input type="text" className="todo-input" onChange={e => setTask(e.target.value)} required/>
-            <button className="todo-button" type="submit">
-                <i className="fas fa-plus-square"></i>
-            </button>
-            <div className="select">
-                <select className="filter-todo" onChange={e => setFilter(e.target.value)}>
-                    <option value="all">All</option>
-                    <option value="completed">Completed</option>
-                    <option value="uncompleted">Uncompleted</option>
-                </select>
-            </div>
-        </form>
+        <div className="task-form-container hidden">
+            <h1>Add Task</h1>
+            <form className="form" onSubmit={saveTask}>
+                <div className="form-group">
+                    <label htmlFor="datetime">Date Time</label>
+                    <DateTimePicker startDate={startDate} onchange={date => setStartDate(date)}/>
+                </div>
+                <div className="form-group">
+                    <label htmlFor="task">Task</label>
+                    <input type="text" className="form-control col-md-3" onChange={e => setTask(e.target.value)} required/>
+                </div>
+                <button className="btn btn-primary" type="submit">Add</button>
+            </form>
+            <hr />
+        </div>
     );
 }
 

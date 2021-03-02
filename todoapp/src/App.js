@@ -1,18 +1,28 @@
 import React from 'react'
-import './App.css';
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 // importing components
-import Form from './components/Form';
-import TodoList from './components/TodoList';
+import Home from './components/Home';
+import Header from './components/Header';
+// import Form from './components/Form';
+// import TodoList from './components/TodoList';
+import EditTask from './components/EditTask';
+import NotFound from './components/NotFound';
+
 
 function App() {
-  	return (
+	return (
 		<div className="App">
-			<header>
-				<h1>Satya's Todo List</h1>
-			</header>
-			<Form />
-			<TodoList />
+			<Router>
+				<Header/>
+			<div>
+				<Switch>
+					<Route path="/" exact component={Home} />
+					<Route path="/task/edit/:id" exact component={EditTask} />
+					<Route component={NotFound} />
+				</Switch>
+			</div>
+			</Router>
 		</div>
 	);
 }
